@@ -1,0 +1,167 @@
+@charset "utf-8";
+// Color
+$c-main: #F5F5EC; //メインカラー
+$c-black: #333; //黒色
+$c-red: #CB1519; //赤色
+
+// Font Family
+$f-G: "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", Meiryo, Osaka, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif;
+$f-M: 'ヒラギノ明朝 ProN', 'Hiragino Mincho ProN', 'ＭＳ Ｐ明朝', 'MS PMincho', 'MS 明朝', sans-serif;
+
+// z-index
+$z-map: (
+  base,
+  header,
+  modal
+);
+@function z($name) {
+  @return index($z-map, $name);
+}
+// .header {
+//   z-index: z(header); // 1
+// }
+
+$margin: 20px;
+$font: 1.5rem;
+$lineheight: 1.8;
+@mixin marginBottom($margin: 20px, $font: 1.5rem, $lineheight: 1.8) {
+    margin-bottom: calc(#{$margin} - (((#{$font} * #{$lineheight}) - #{$font}) / 2));
+}
+//@include marginBottom($margin: 20px, $font: 1.5rem, $lineheight: 1.8);
+
+@mixin fz($size: 14) {
+  font-size: $size + px;
+  font-size: ($size / 10) + rem;
+}
+//@include fz(12);//
+
+@mixin vw($size: 14) {
+  font-size: $size + px;
+  font-size: ($size / 375 * 100) + vw;
+}
+//@include vw(12);//
+
+@mixin hidetext {
+  overflow: hidden;
+  white-space: nowrap;
+  text-indent: 100%;
+}
+//@include hidetext;//
+
+@mixin cuttext {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+//@include cuttext;//
+
+@mixin cuttextMulti($line-height,$font-size,$lines,$color){
+  line-height: $line-height;
+  height: $font-size*$line-height*$lines+px;
+  overflow: hidden;
+  position: relative;
+  word-break: break-all;
+  text-align:justify;
+  &:before,
+  &:after{
+    position: absolute;
+  }
+  &:before{
+    content: '...';
+    background: $color;
+    right: -.2em;
+    text-align: center;
+    width:1.3em !important;
+    top:$font-size*$line-height*($lines - 1) +px;
+  }
+  &:after {
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: 0px;
+    z-index: 2;
+    background: $color;
+  }
+}
+//@include cuttextMulti(2,14,5,#ffffff);
+@mixin cuttextMultiIe($line-height,$font-size,$lines,$color,$class) {
+  #{unquote('_:-ms-lang(x)::-ms-backdrop,')} .#{$class}{
+    line-height: $line-height;
+    height: $font-size*$line-height*$lines+px;
+    overflow: hidden;
+    position: relative;
+    word-break: break-all;
+    text-align:justify;
+    text-justify: inter-ideograph;
+  }
+  #{unquote('_:-ms-lang(x)::-ms-backdrop,')} .#{$class}:before{
+    position: absolute;
+    content: '...';
+    background: $color;
+    right: 0px;
+    text-align: center;
+    width:1.2em !important;
+    top:$font-size*$line-height*($lines - 1) +px;
+  }
+  #{unquote('_:-ms-lang(x)::-ms-backdrop,')} .#{$class}:after{
+    position: absolute;
+    content: '';
+    height: 100%;
+    width: 100%;
+    background: 0px;
+    z-index: 2;
+    background: $color;    
+  }
+}
+
+@mixin line($line: 2) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $line; // 2行で「…（3点リーダー）」を挿入
+}
+//@include line(2);//
+
+@mixin placeholder {
+  &:placeholder-shown {
+    @content;
+  }
+  &::-webkit-input-placeholder {
+    @content;
+  }
+  &:-moz-placeholder {
+    @content;
+    opacity: 1;
+  }
+  &::-moz-placeholder {
+    @content;
+    opacity: 1;
+  }
+  &:-ms-input-placeholder {
+    @content;
+  }
+}
+//@include placeholderColor(#00ff00);
+
+$pc: 768px; // PC
+$tab: 900px; // TAB
+$sp: 767px; // SP
+
+@mixin pc {
+  @media (min-width: ($pc)) {
+    @content;
+  }
+}
+@mixin tab {
+  @media (max-width: ($tab)) and (min-width: ($sp)){
+    @content;
+  }
+}
+@mixin sp {
+  @media (max-width: ($sp)) {
+    @content;
+  }
+}
+
+//@include pc
